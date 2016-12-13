@@ -7,19 +7,39 @@
 //
 
 import UIKit
+import CoreData
 
 class GroceryListTableViewController: UITableViewController {
     
-    var groceries = [String]()
+    //we are now storing NSMangedObjects which is a basic class that can go into core data
+    var groceries = [NSManagedObject]()
+    //managed the object space of the app
+    var managedObjectContext: NSManagedObjectContext?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        //we want acces to this so that we can get a hold of the persistence container
+        managedObjectContext = appDelegate.persistentContainer.viewContext
         
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        loadData() //helper function
+    }
+    
+    //want to get the data from our grocery entity
+    func loadData() {
+        //fetch request selects and orders data from the database. In this case we want any entity of "grocery"
+        let request: NSFetchRequest<NSManagedObject> = NSFetchRequest(entityName: "Grocery") //this is just a query. It's not been sent yet
+        
+        do {
+            let results = try managedObjectContext?.fetch(request)
+            groceries = results! //groceries is a list of NSMAnagedObject
+            tableView.reloadData() //reloads all the cells in the table
+        }
+        catch {
+            fatalError("Error in retrieving item")
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -37,8 +57,26 @@ class GroceryListTableViewController: UITableViewController {
         
         let addAction = UIAlertAction(title: "ADD", style: UIAlertActionStyle.default) { [weak self](action: UIAlertAction) in
             let textField = alertController.textFields?.first
-            self?.groceries.append(textField!.text!)
-            self?.tableView.reloadData()
+            //self?.groceries.append(textField!.text!) //old
+            
+            //gets all entities in managedObjectContext
+            let entity = NSEntityDescription.entity(forEntityName: "Grocery", in: (self?.managedObjectContext)!)
+            
+            // gets the grocery entity
+            let grocery = NSManagedObject(entity: entity!, insertInto: self?.managedObjectContext)
+            
+            // saves an item string in grocery entity. It's assumed that item will be a list? How else could there be unique values for just one key?
+            grocery.setValue(textField!.text!, forKey: "item")
+            
+            do {
+                try self?.managedObjectContext?.save()
+            }
+            catch {
+                fatalError("Error in storing data")
+            }
+            
+            //reload the table. Seems inefficient
+            self?.loadData()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
@@ -67,7 +105,13 @@ class GroceryListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "groceryCell", for: indexPath)
         
-        cell.textLabel?.text = self.groceries[indexPath.row]
+        //cell.textLabel?.text = self.groceries[indexPath.row]
+        
+        //how does it know the order? Based ont the fetchHandler query?
+        let grocery = self.groceries[indexPath.row]
+        
+        //ohh, groceries holds a list of dictionaries (NSManagedObject) 
+        cell.textLabel?.text = grocery.value(forKey: "item") as? String
         
         return cell
     }
