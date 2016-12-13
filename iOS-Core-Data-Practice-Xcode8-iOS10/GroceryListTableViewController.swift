@@ -12,7 +12,7 @@ import CoreData
 class GroceryListTableViewController: UITableViewController {
     
     //we are now storing NSMangedObjects which is a basic class that can go into core data
-    var groceries = [NSManagedObject]()
+    var groceries = [Grocery]()
     //managed the object space of the app
     var managedObjectContext: NSManagedObjectContext?
     
@@ -30,7 +30,9 @@ class GroceryListTableViewController: UITableViewController {
     //want to get the data from our grocery entity
     func loadData() {
         //fetch request selects and orders data from the database. In this case we want any entity of "grocery"
-        let request: NSFetchRequest<NSManagedObject> = NSFetchRequest(entityName: "Grocery") //this is just a query. It's not been sent yet
+        //let request: NSFetchRequest<NSManagedObject> = NSFetchRequest(entityName: "Grocery") //this is just a query. It's not been sent yet
+        
+        let request: NSFetchRequest<Grocery> = Grocery.fetchRequest()
         
         do {
             let results = try managedObjectContext?.fetch(request)
@@ -56,6 +58,8 @@ class GroceryListTableViewController: UITableViewController {
         }
         
         let addAction = UIAlertAction(title: "ADD", style: UIAlertActionStyle.default) { [weak self](action: UIAlertAction) in
+            
+            /*
             let textField = alertController.textFields?.first
             //self?.groceries.append(textField!.text!) //old
             
@@ -67,7 +71,20 @@ class GroceryListTableViewController: UITableViewController {
             
             // saves an item string in grocery entity. It's assumed that item will be a list? How else could there be unique values for just one key?
             grocery.setValue(textField!.text!, forKey: "item")
+            */
             
+            let itemString: String?
+            
+            if(alertController.textFields?.first?.text != "") {
+                itemString = alertController.textFields?.first?.text
+            }
+            else {
+                return
+            }
+            
+            let grocery = Grocery(context: (self?.managedObjectContext)!)
+            
+            grocery.item = itemString
             do {
                 try self?.managedObjectContext?.save()
             }
@@ -110,9 +127,13 @@ class GroceryListTableViewController: UITableViewController {
         //how does it know the order? Based ont the fetchHandler query?
         let grocery = self.groceries[indexPath.row]
         
+        /*
         //ohh, groceries holds a list of dictionaries (NSManagedObject) 
         cell.textLabel?.text = grocery.value(forKey: "item") as? String
+        */
         
+        cell.textLabel?.text = grocery.item
+
         return cell
     }
     
