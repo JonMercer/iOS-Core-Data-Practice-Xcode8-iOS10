@@ -13,6 +13,7 @@
 		7BA71C801D76987700AB7D2D /* Home_Report.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BA71C7E1D76987700AB7D2D /* Home_Report.xcdatamodeld */; };
 		7BA71C821D76987700AB7D2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BA71C811D76987700AB7D2D /* Assets.xcassets */; };
 		7BA71C851D76987700AB7D2D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7BA71C831D76987700AB7D2D /* LaunchScreen.storyboard */; };
+		C81889811E0C83D10048AD5B /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81889801E0C83D10048AD5B /* CoreDataStack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		7BA71C811D76987700AB7D2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7BA71C841D76987700AB7D2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7BA71C861D76987700AB7D2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C81889801E0C83D10048AD5B /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				7BA71C831D76987700AB7D2D /* LaunchScreen.storyboard */,
 				7BA71C861D76987700AB7D2D /* Info.plist */,
 				7BA71C7E1D76987700AB7D2D /* Home_Report.xcdatamodeld */,
+				C81889801E0C83D10048AD5B /* CoreDataStack.swift */,
 			);
 			path = "Home Report";
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 				7BA71C801D76987700AB7D2D /* Home_Report.xcdatamodeld in Sources */,
 				7BA71C7A1D76987700AB7D2D /* ViewController.swift in Sources */,
 				7BA71C781D76987700AB7D2D /* AppDelegate.swift in Sources */,
+				C81889811E0C83D10048AD5B /* CoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
